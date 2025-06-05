@@ -3,6 +3,7 @@ package org.ben.service.order.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.ben.model.order.Order;
 import org.ben.model.product.Product;
+import org.ben.service.order.feign.ProductFeignClient;
 import org.ben.service.order.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
@@ -29,9 +30,14 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private LoadBalancerClient loadBalancerClient;
 
+    @Autowired
+    private ProductFeignClient productFeignClient;
+
     @Override
     public Order createOrder(Long productId, Long userId) {
-        Product product = this.getProductFromRemoteWithLoadBalancedAnnotation(productId);
+//        Product product = this.getProductFromRemoteWithLoadBalancedAnnotation(productId);
+
+        Product product = this.productFeignClient.getProductById(productId);
         Order order = new Order();
         order.setId(1L);
         order.setAmount(BigDecimal.TEN);
