@@ -31,7 +31,7 @@ public class OrderController {
 
     @GetMapping("/order/config")
     public String getConfig() {
-        return this.orderProperties.getTimeout() + " : " + this.orderProperties.getAutoConfirm();
+        return this.orderProperties.getTimeout() + " : " + this.orderProperties.getAutoConfirm() + ":" + this.orderProperties.getDbUrl();
     }
 
     @GetMapping("/order/create")

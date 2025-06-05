@@ -27,7 +27,7 @@ public class ServiceConfig
     public ApplicationRunner applicationRunner(NacosConfigManager nacosConfigManager) {
         return args -> {
             ConfigService configService = nacosConfigManager.getConfigService();
-            configService.addListener("service-order.properties", "DEFAULT_GROUP", new Listener() {
+            configService.addListener("service-order.yml", "DEFAULT_GROUP", new Listener() {
                 @Override
                 public Executor getExecutor() {
                     return Executors.newSingleThreadExecutor();

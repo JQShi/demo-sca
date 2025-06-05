@@ -1,10 +1,31 @@
 server:
   port: 8000
 spring:
+  profiles:
+    active: dev
   application:
     name: service-order
   cloud:
     nacos:
       server-addr: 127.0.0.1:8848
+      config:
+        import-check:
+          enabled: false
+        namespace: ${spring.profiles.active:dev}
+
+---
+spring:
   config:
-    import: nacos:service-order.properties
+    import:
+      - nacos:service-order.yml?group=service-order
+      - nacos:database.yml?group=service-order
+    activate:
+      on-profile: dev
+---
+spring:
+  config:
+    import:
+      - nacos:service-order.yml?group=service-order
+      - nacos:database.yml?group=service-order
+    activate:
+      on-profile: prod
