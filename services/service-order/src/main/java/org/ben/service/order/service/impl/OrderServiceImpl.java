@@ -1,11 +1,13 @@
 package org.ben.service.order.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.ben.model.order.Order;
 import org.ben.model.product.Product;
 import org.ben.service.order.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -14,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
+@Slf4j
 public class OrderServiceImpl implements OrderService {
 
 
@@ -23,9 +26,12 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private LoadBalancerClient loadBalancerClient;
+
     @Override
     public Order createOrder(Long productId, Long userId) {
-        Product product = this.getProductFromRemote(productId);
+        Product product = this.getProductFromRemoteWithLoadBalancedAnnotation(productId);
         Order order = new Order();
         order.setId(1L);
         order.setAmount(BigDecimal.TEN);
@@ -41,6 +47,27 @@ public class OrderServiceImpl implements OrderService {
         String host = instances.get(0).getHost();
 
         String url = "http://" + host + ":" + port + "/product/" + productId;
+        Product product = this.restTemplate.getForObject(url, Product.class);
+        return product;
+    }
+
+    private Product getProductFromRemoteWithLoadBalance(Long productId) {
+        String serviceId = "service-product";
+        ServiceInstance service = this.loadBalancerClient.choose(serviceId);
+        String host = service.getHost();
+        int port = service.getPort();
+
+        String url = "http://" + host + ":" + port + "/product/" + productId;
+        log.info("invoked url {}", url);
+        Product product = this.restTemplate.getForObject(url, Product.class);
+        return product;
+    }
+
+    private Product getProductFromRemoteWithLoadBalancedAnnotation(Long productId) {
+        String serviceId = "service-product";
+        String url = "http://" + serviceId + "/product/" + productId;
+        log.info("invoked url {}", url);
+        log.info("restTemplate:" + this.restTemplate);
         Product product = this.restTemplate.getForObject(url, Product.class);
         return product;
     }

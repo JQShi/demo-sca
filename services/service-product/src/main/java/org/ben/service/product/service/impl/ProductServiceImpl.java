@@ -9,8 +9,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product getProductById(Long id) {
         Product product = new Product();
-        product.setId("123");
-        product.setName("iphone-16");
+        product.setId(id);
+        product.setName("苹果手机-16");
         return product;
     }
 }
