@@ -6,6 +6,8 @@ import org.ben.service.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.TimeUnit;
+
 @Service
 @Slf4j
 public class ProductServiceImpl implements ProductService {
@@ -14,10 +16,10 @@ public class ProductServiceImpl implements ProductService {
     private Long port;
 
     @Override
-    public Product getProductById(Long id) {
+    public Product getProductById(Long id) throws InterruptedException {
 
         log.info("product service invoked at port:{}", port);
-
+        TimeUnit.SECONDS.sleep(6);
         Product product = new Product();
         product.setId(id);
         product.setName("苹果手机-16");

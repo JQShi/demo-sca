@@ -4,5 +4,5 @@ import org.ben.model.product.Product;
 
 public interface ProductService {
 
-    Product getProductById(Long id);
+    Product getProductById(Long id) throws InterruptedException;
 }

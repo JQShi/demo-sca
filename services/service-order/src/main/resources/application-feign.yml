@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            logger-level: full
+            read-timeout: 5000
+            connect-timeout: 3000
+          service-product:
+            logger-level: full
+            read-timeout: 5000
+            connect-timeout: 3000
