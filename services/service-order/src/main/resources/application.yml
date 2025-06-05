@@ -13,6 +13,9 @@ spring:
           enabled: false
         namespace: ${spring.profiles.active:dev}
 
+logging:
+  level:
+    org.ben.service.order.feign.ProductFeignClient: debug
 ---
 spring:
   config:
