@@ -4,8 +4,6 @@ import org.ben.model.order.Order;
 import org.ben.service.order.properties.OrderProperties;
 import org.ben.service.order.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,6 +31,7 @@ public class OrderController {
     public String getConfig() {
         return this.orderProperties.getTimeout() + " : " + this.orderProperties.getAutoConfirm() + ":" + this.orderProperties.getDbUrl();
     }
+
 
     @GetMapping("/order/create")
     public Order createOrder(@RequestParam Long productId, @RequestParam Long userId) {

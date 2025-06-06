@@ -1,5 +1,7 @@
 package org.ben.service.order.service.impl;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import lombok.extern.slf4j.Slf4j;
 import org.ben.model.order.Order;
 import org.ben.model.product.Product;
@@ -33,6 +35,16 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private ProductFeignClient productFeignClient;
 
+
+    public Order createOrderFallback(Long productId, Long userId, BlockException ex) {
+        Order order = new Order();
+        order.setId(0L);
+        order.setAmount(BigDecimal.ZERO);
+        order.setUserId(userId);
+        return order;
+    }
+
+    @SentinelResource(value = "create-order", blockHandler = "createOrderFallback")
     @Override
     public Order createOrder(Long productId, Long userId) {
 //        Product product = this.getProductFromRemoteWithLoadBalancedAnnotation(productId);
