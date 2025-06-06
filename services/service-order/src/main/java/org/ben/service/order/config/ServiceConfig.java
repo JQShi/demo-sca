@@ -25,10 +25,10 @@ public class ServiceConfig
         return new RestTemplate();
     }
 
-    @Bean
-    public Retryer retryer() {
-        return new Retryer.Default();
-    }
+//    @Bean
+//    public Retryer retryer() {
+//        return new Retryer.Default();
+//    }
 
     @Bean
     public Logger.Level feignLoggerLevel() {

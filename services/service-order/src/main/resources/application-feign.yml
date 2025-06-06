@@ -11,3 +11,6 @@ spring:
             logger-level: full
             read-timeout: 5000
             connect-timeout: 3000
+feign:
+  sentinel:
+    enabled: true
