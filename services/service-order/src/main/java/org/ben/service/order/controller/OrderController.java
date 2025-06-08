@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.math.BigDecimal;
 
 //@RefreshScope
-@RequestMapping("/api/order")
+//@RequestMapping("/api/order")
 @RestController
 @Slf4j
 public class OrderController {
