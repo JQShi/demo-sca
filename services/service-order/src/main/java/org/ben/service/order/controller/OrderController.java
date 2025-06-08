@@ -1,5 +1,7 @@
 package org.ben.service.order.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import lombok.extern.slf4j.Slf4j;
 import org.ben.model.order.Order;
 import org.ben.service.order.properties.OrderProperties;
@@ -8,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.math.BigDecimal;
 
 //@RefreshScope
 @RestController
@@ -40,8 +44,18 @@ public class OrderController {
     }
 
     @GetMapping("/seckill")
+    @SentinelResource(value = "seckill-order", fallback = "seckillFallback")
     public Order seckill(@RequestParam Long productId, @RequestParam Long userId) {
         return this.orderService.createOrder(productId, userId);
+    }
+
+    public Order seckillFallback(@RequestParam Long productId, @RequestParam Long userId, Throwable ex) {
+        log.info("seckill fallback invoked ...");
+        Order order = new Order();
+        order.setId(0L);
+        order.setAmount(BigDecimal.ZERO);
+        order.setUserId(userId);
+        return order;
     }
 
     @GetMapping("/writedb")

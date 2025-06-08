@@ -19,7 +19,7 @@ public class ProductServiceImpl implements ProductService {
     public Product getProductById(Long id) throws InterruptedException {
 
         log.info("product service invoked at port:{}", port);
-        TimeUnit.SECONDS.sleep(2);
+//        TimeUnit.SECONDS.sleep(2);
         Product product = new Product();
         product.setId(id);
         product.setName("苹果手机-16");
