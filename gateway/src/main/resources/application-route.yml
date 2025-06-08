@@ -2,6 +2,11 @@ spring:
   cloud:
     gateway:
       routes:
+        - id: vip-route
+          uri: https://cn.bing.com/
+          predicates:
+            - Path=/search/**
+            - Vip=user,cc
         - id: order-route
           uri: lb://service-order
           predicates:
