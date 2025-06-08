@@ -1,6 +1,12 @@
 spring:
   cloud:
     gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+              allowed-origins: '*'
+              allowed-headers: '*'
+              allowed-methods: '*'
       routes:
         - id: vip-route
           uri: https://cn.bing.com/
